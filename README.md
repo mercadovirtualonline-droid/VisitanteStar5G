@@ -5,9 +5,6 @@ VisitanteStar5G/
 ├── script.js
 └── assets/
     └── background.jpg
-
-
-assets/background.jpg
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -52,6 +49,7 @@ assets/background.jpg
 
 </body>
 </html>
+
 body {
     margin:0;
     font-family: 'Segoe UI', sans-serif;
@@ -74,7 +72,7 @@ body {
 }
 
 .logo {
-    font-size:32px;
+    font-size:28px;
     font-weight:bold;
     margin-bottom:10px;
 
@@ -106,84 +104,72 @@ body {
 .progress {
     height:100%;
     width:0%;
-    background: linear-gradient(90deg,#833AB4,#FD1D1D,#FCAF45);
-    transition: width 0.5s;
+    background:gold;
+    transition: width 1s;
 }
 
 button {
-    width:90%;
-    max-width:320px;
-    padding:15px;
+    padding:12px 20px;
+    margin:10px;
     border:none;
-    border-radius:12px;
+    border-radius:8px;
     font-size:16px;
-    font-weight:bold;
-    margin-top:10px;
+    cursor:pointer;
 }
 
 .insta {
-    background: linear-gradient(45deg,#833AB4,#FD1D1D,#FCAF45);
+    background:#E1306C;
+    color:white;
 }
 
 .wifi {
-    background: gray;
+    background:gold;
+    color:black;
+}
+
+.wifi:disabled {
+    background:gray;
 }
 
 .footer {
     margin-top:20px;
     font-size:12px;
-    opacity:0.6;
+    opacity:0.7;
 }
-let tempo = 8;
-let total = 8;
+let tempo = 5;
+let progresso = 0;
 
-let contador = document.getElementById("contador");
-let progress = document.getElementById("progress");
-let btnWifi = document.getElementById("btnWifi");
+const contador = document.getElementById("contador");
+const barra = document.getElementById("progress");
+const botaoWifi = document.getElementById("btnWifi");
 
-let linkInsta = "https://www.instagram.com/star.festaseeventos";
+function abrirInstagram() {
+    window.open("https://www.instagram.com/star.festaseeventos", "_blank");
 
-// abrir Instagram
-function abrirInstagram(){
-    window.open(linkInsta, "_blank");
-}
-
-// liberar Wi-Fi (compatibilidade geral)
-function liberarWifi(){
-    window.location.href = "http://1.1.1.1";
-
-    setTimeout(()=>{
-        window.location.href = "http://192.168.0.1";
-    },2000);
-
-    setTimeout(()=>{
-        window.location.href = "http://192.168.1.1";
-    },4000);
+    iniciarContagem();
 }
 
-// tentativa automática (pode ser bloqueada)
-setTimeout(()=>{
-    window.open(linkInsta, "_blank");
-},3000);
+function iniciarContagem() {
+    const intervalo = setInterval(() => {
 
-// contador + barra
-let intervalo = setInterval(()=>{
+        tempo--;
+        progresso += 20;
 
-    tempo--;
+        barra.style.width = progresso + "%";
+        contador.innerText = "Aguarde " + tempo + "s...";
 
-    let progresso = ((total - tempo) / total) * 100;
-    progress.style.width = progresso + "%";
+        if (tempo <= 0) {
+            clearInterval(intervalo);
 
-    contador.innerHTML = "Aguarde " + tempo + " segundos...";
+            contador.innerText = "Acesso liberado!";
+            botaoWifi.disabled = false;
+            botaoWifi.innerText = "✔ Liberar Wi-Fi";
+        }
 
-    if(tempo <= 0){
-        clearInterval(intervalo);
+    }, 1000);
+}
 
-        contador.innerHTML = "✅ Agora você pode liberar o Wi-Fi";
-
-        btnWifi.disabled = false;
-        btnWifi.style.background = "#00c853";
-    }
-
-},1000);
-<img width="720" height="1600" alt="Screenshot_20260501-100312" src="https://github.com/user-attachments/assets/0189a60d-b961-4724-8a62-1488a446f480" />
+function liberarWifi() {
+    // ESSENCIAL PARA INTELBRAS
+    window.location.href = "http://login.intelbras/ok.html";
+}
